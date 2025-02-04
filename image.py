@@ -12,7 +12,7 @@ def load_image(image_name):
         print("Unable to load image")
         return None
     
-def image_to_graph(image, image_name, threshold=0.5, size=(200, 300)):
+def image_to_graph(image, image_name, threshold=0.5, size=(60, 40), invert=False):
     """
     Create a graph from an image.
     
@@ -35,11 +35,13 @@ def image_to_graph(image, image_name, threshold=0.5, size=(200, 300)):
     nodes = dict()
     
     # add nodes for dark pixels
-    for y in range(0, height, 1):
-        for x in range(0, width, 1):
+    for y in range(height):
+        for x in range(width):
             r, g, b, a = pixels[x, y]
+            if a == 0:
+                continue
             brightness = (r + g + b) / 3
-            if brightness > t:
+            if ((not invert) and (brightness <= t)) or ((invert and (brightness >= t))):
                 nodes[(x, height - y)] = (x, height - y)
     graph.add_nodes_from(nodes.keys())
 
@@ -54,12 +56,29 @@ def image_to_graph(image, image_name, threshold=0.5, size=(200, 300)):
                     dist = np.sqrt(dx ** 2 + dy ** 2)
                     graph.add_edge((x, y), neighbor, weight=dist)
 
-    nx.draw(graph, nodes, node_size=1)
-    plt.savefig("processed/" + image_name)
+    ### remove redundant nodes ###
 
+    # connect all components
+    components = list(nx.connected_components(graph))
+    while(len(components) > 1):
+        min_dist = float("inf")
+        min_edge = None
+        for pair1 in components[0]:
+            for pair2 in components[1]:
+                dist = np.sqrt((pair1[0] - pair2[0]) ** 2 + (pair1[1] - pair2[1]) ** 2)
+                if dist < min_dist:
+                    min_dist = dist
+                    min_edge = (pair1, pair2)
+        graph.add_edge(min_edge[0], min_edge[1], weight=min_dist)
+        components = list(nx.connected_components(graph))
+        print("Connecting components... {} components left".format(len(components)))
+
+    nx.draw(graph, nodes, node_size=10)
+    plt.savefig("processed/" + image_name)
+        
     return graph
 
-def tsp(graph, method="christofides"):
+def tsp(graph, method=nx.approximation.greedy_tsp):
     """
     Run the traveling salesman problem algorithm.
     
@@ -69,6 +88,6 @@ def tsp(graph, method="christofides"):
     Returns:
     """
 
-    return nx.approximation.traveling_salesman_problem(graph, cycle=False)
-
+    print("Running TSP algorithm...")
+    return nx.approximation.traveling_salesman_problem(graph, method=method, cycle=False)
     
