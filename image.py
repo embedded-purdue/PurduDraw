@@ -45,18 +45,30 @@ def image_to_graph(image, image_name, threshold=0.5, size=(60, 40), invert=False
                 nodes[(x, height - y)] = (x, height - y)
     graph.add_nodes_from(nodes.keys())
 
+    # keep_lines = "horiz"
+    keep_lines = "vert"
+
     # connect neighboring nodes
     for (x, y) in nodes:
+        neighbor_count = 0
         for dx in [-1, 0, 1]:
             for dy in [-1, 0, 1]:
                 if dx == 0 and dy == 0:
                     continue
                 neighbor = (x + dx, y + dy)
                 if neighbor in nodes:
+                    neighbor_count += 1
                     dist = np.sqrt(dx ** 2 + dy ** 2)
                     graph.add_edge((x, y), neighbor, weight=dist)
-
-    ### remove redundant nodes ###
+        # If we're in the middle of the graph, the fastest route is basically always gonna be straight up/down
+        # So, just remove all other edges, and give the tsp less to search thru
+        if neighbor_count == 8:
+            for dx in [-1, 0, 1]:
+                for dy in [-1, 0, 1]:
+                    # remove everything where we are moving sideways
+                    if (keep_lines == "vert" and dx != 0) or (keep_lines == "horiz" and dy == 0):
+                        neighbor = (x + dx, y + dy)
+                        graph.remove_edge((x,y), neighbor)
 
     # connect all components
     components = list(nx.connected_components(graph))

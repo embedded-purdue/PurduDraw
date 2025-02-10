@@ -1,0 +1,21 @@
+Running main.py initially:
+    - Purdue logo
+    Running greedy_tsp
+    Running TSP algorithm...
+    greedy_tsp executed in 31.300487995147705 seconds
+    Running christofides
+    Running TSP algorithm...
+    christofides executed in 46.61903214454651 seconds
+
+after pruning edges to only vertical:
+    - Purdue logo
+    Running greedy_tsp
+    Running TSP algorithm...
+    greedy_tsp executed in 23.63186001777649 seconds
+    Running christofides
+    Running TSP algorithm...
+    christofides executed in 38.2905170917511
+
+    k so like we shaved off a bit less than 20%
+    should be faster tho
+

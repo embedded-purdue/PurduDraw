@@ -6,6 +6,8 @@ from PIL import Image
 from image import *
 from simulate import *
 
+import time
+
 def main():
 
     # set image name
@@ -27,7 +29,10 @@ def main():
                (nx.approximation.christofides, "christofides")]
     for method, method_name in methods:
         print("Running", method_name)
+        start = time.time()
         path = tsp(graph, method)
+        end = time.time()
+        print(method_name, "executed in", end-start, "seconds")
         draw_path(path, image_name + "_" + method_name + "_path"  + ex)
 
     print("Done.")

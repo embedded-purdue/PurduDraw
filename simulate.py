@@ -14,4 +14,4 @@ def draw_path(path, image_name):
     plt.plot(x, y, linestyle='-', color='black')
     plt.gca().set_aspect('equal', adjustable='box')
     plt.savefig("processed/" + image_name)
-    # plt.show()
+    plt.show()
