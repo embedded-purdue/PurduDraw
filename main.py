@@ -25,15 +25,14 @@ def main():
 
     # # simulate
     # draw_path(path, image_name + "_path" + ex)
-    methods = [(nx.approximation.greedy_tsp, "greedy_tsp"),
-               (nx.approximation.christofides, "christofides")]
-    for method, method_name in methods:
-        print("Running", method_name)
-        start = time.time()
-        path = tsp(graph, method)
-        end = time.time()
-        print(method_name, "executed in", end-start, "seconds")
-        draw_path(path, image_name + "_" + method_name + "_path"  + ex)
+    print("Running Chinese Postman")
+    start = time.time()
+    # path = tsp(graph, method)
+    edge_path = cpp(graph)
+    end = time.time()
+    print("Postman executed in", end-start, "seconds")
+    draw_edgepath(edge_path, image_name + "_postman_path"  + ex)
+    # draw_path(path, image_name + "_postman_path"  + ex)
 
     print("Done.")
 
