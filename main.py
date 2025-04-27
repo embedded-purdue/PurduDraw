@@ -21,10 +21,11 @@ def main():
     graph = image_to_graph(image, image_name + "_graph" + ex)
 
     # run TSP algorithm
-    path = tsp(graph)
+    path = dfs(graph)
 
     # simulate
     draw_path(path, image_name + "_path" + ex)
+
     data = delta_path(path)
 
     # print("Running Chinese Postman")
