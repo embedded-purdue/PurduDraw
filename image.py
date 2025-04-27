@@ -59,18 +59,19 @@ def image_to_graph(image: Image.Image, image_name, size=(850, 600)):
     # plt.show()
 
     gray = cv2.cvtColor(laplaced, cv2.COLOR_RGB2GRAY)
-    # plt.imshow(gray,cmap = 'gray')
-    # plt.show()
+    plt.imshow(gray,cmap = 'gray')
+    plt.show()
 
     graph = nx.Graph()
     nodes = dict()
     nx.MultiGraph
     
-    # add nodes for dark pixels
+    # add nodes for light pixels
     for y in range(gray.shape[0]):
         for x in range(gray.shape[1]):
-            if (gray[y,x] > 200):
+            if (gray[y,x] > 100):
                 nodes[(x, size[1] - y)] = (x, size[1] - y)
+    nodes[(0, size[1])] = (0, size[1])
     graph.add_nodes_from(nodes.keys())
 
     # connect neighboring nodes
@@ -130,7 +131,7 @@ def image_to_graph(image: Image.Image, image_name, size=(850, 600)):
         
     return graph
 
-def tsp(graph, start_node=None, method=nx.approximation.greedy_tsp):
+def tsp(graph, start_node=(0, 600), method=nx.approximation.greedy_tsp):
     """
     Run the traveling salesman problem algorithm.
     

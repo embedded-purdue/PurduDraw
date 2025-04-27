@@ -24,8 +24,7 @@ def main():
     path = tsp(graph)
 
     # simulate
-    # draw_path(path, image_name + "_path" + ex)
-
+    draw_path(path, image_name + "_path" + ex)
     data = delta_path(path)
 
     # print("Running Chinese Postman")
