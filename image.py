@@ -3,6 +3,7 @@ import numpy as np
 import networkx as nx
 import matplotlib.pyplot as plt
 import cv2
+import csv
 
 def load_image(image_name):
     try:
@@ -163,7 +164,7 @@ def make_dict(nodelist):
         dict[node] = node
     return dict
 
-def delta_path(path):
+def delta_path(path, filename="delta_path.csv"):
 
     d_path = []
     for i in range(len(path)):
@@ -172,7 +173,13 @@ def delta_path(path):
         dx = path[i][0] - path[i-1][0]
         dy = path[i][1] - path[i-1][1]
         d_path.append((dx, dy))
+
+    with open(filename, mode='w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerows(d_path)
+
     return d_path
+
 
 def cpp(graph: nx.Graph):
 
