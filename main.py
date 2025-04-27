@@ -11,28 +11,31 @@ import time
 def main():
 
     # set image name
-    image_name = "purdue_logo"
-    ex = ".png"
+    image_name = "pikachu"
+    ex = ".jpg"
     
     # load image
     image = load_image(image_name + ex)
 
     # create graph from image
-    graph = image_to_graph(image, image_name + "_graph" + ex, threshold=0.2, size=(90, 60), invert=True)
+    graph = image_to_graph(image, image_name + "_graph" + ex)
 
-    # # run TSP algorithm
-    # path = tsp(graph)
+    # run TSP algorithm
+    path = tsp(graph)
 
-    # # simulate
+    # simulate
     # draw_path(path, image_name + "_path" + ex)
-    print("Running Chinese Postman")
-    start = time.time()
-    # path = tsp(graph, method)
-    edge_path = cpp(graph)
-    end = time.time()
-    print("Postman executed in", end-start, "seconds")
-    draw_edgepath(edge_path, image_name + "_postman_path"  + ex)
-    # draw_path(path, image_name + "_postman_path"  + ex)
+
+    data = delta_path(path)
+
+    # print("Running Chinese Postman")
+    # start = time.time()
+    # # path = tsp(graph, method)
+    # edge_path = cpp(graph)
+    # end = time.time()
+    # print("Postman executed in", end-start, "seconds")
+    # draw_edgepath(edge_path, image_name + "_postman_path"  + ex)
+    # # draw_path(path, image_name + "_postman_path"  + ex)
 
     print("Done.")
 
