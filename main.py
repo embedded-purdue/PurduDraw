@@ -11,8 +11,8 @@ import time
 def main():
 
     # set image name
-    image_name = "pikachu"
-    ex = ".jpg"
+    image_name = "subaru"
+    ex = ".png"
     
     # load image
     image = load_image(image_name + ex)
